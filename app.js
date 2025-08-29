@@ -3,7 +3,9 @@ dotenv.config();
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
 import { createClient } from "@supabase/supabase-js";
+// const { createRole } = require("./Controller/createRole.js")
 import { createRole } from "./Controller/createRole.js";
+import { createUser } from "./Controller/createUser.js";
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -14,24 +16,12 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 const app = express();
 app.use(express.json());
 
-app.post("/register", async (req, res) => {
-  const { username, password, firstname, lastname, role_id } = req.body;
-  const user_id = uuidv4().slice(0, 8);
-
-  const { data, error } = await supabase.from("users").insert([
-    {
-      user_id,
-      username,
-      password,
-      firstname,
-      lastname,
-      role_id,
-      create_user: user_id,
-    },
-  ]);
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.status(201).json(data);
+app.post("/create-user", async (req, res) => {
+  let returnData = await createUser(req);
+  const response = {
+    ...returnData,
+  };
+  res.status(response.statusCode).json(response.body);
 });
 
 app.post("/login", async (req, res) => {
