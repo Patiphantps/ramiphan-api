@@ -28,7 +28,6 @@ function convertRawResponseToResponseType(res) {
         message_th: res.body.returnDescTH,
         message_en: res.body.returnDesc,
         error_cause: res.body.errorCause,
-        system_code: res.body.systemCode,
       },
     },
   };

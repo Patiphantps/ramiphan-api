@@ -29,10 +29,17 @@ const internal_err = {
   returnDesc: "Internal error",
 };
 
+const duplicate_data_err = {
+  returnCode: "10005",
+  returnDescTH: "ข้อมูลซ้ำ กรุณากรอกใหม่อีกครั้ง",
+  returnDesc: "Duplicate data",
+};
+
 export default {
   success,
   invalid_data_err,
   malformed_JSON,
   database_err,
   internal_err,
+  duplicate_data_err,
 };
