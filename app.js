@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 // const { createRole } = require("./Controller/createRole.js")
 import { createRole } from "./Controller/createRole.js";
 import { createUser } from "./Controller/createUser.js";
+import { login } from "./Controller/login.js";
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -25,18 +26,11 @@ app.post("/create-user", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("username", username)
-    .eq("password", password)
-    .single();
-
-  if (error || !data)
-    return res.status(401).json({ error: "Invalid credentials" });
-  res.json({ message: "Login successful", user: data });
+  let returnData = await login(req);
+  const response = {
+    ...returnData, 
+  };
+  res.status(response.statusCode).json(response.body);
 });
 
 app.post("/role", async (req, res) => {
